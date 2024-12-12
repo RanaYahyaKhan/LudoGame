@@ -32,9 +32,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject lobbyPannel;
     [SerializeField] private TMP_Text waitingTex;
 
-    [Header("MatchStart")]
-    [SerializeField] private GameObject matchScreen;
-    [SerializeField] private TMP_Text matchText;
+   
     
     private const byte StartGameNow = 99;
     [SerializeField] private TMP_InputField playerName;
@@ -273,7 +271,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient) // Only the Master Client can initiate scene loading
         {
             Debug.Log("Room is full. Starting the game...");
-            await Task.Delay(2000);
+            await Task.Delay(4000);
             PhotonNetwork.LoadLevel("LudoGame");
             //PhotonNetwork.LoadLevel("LudoGamePlay");
         }

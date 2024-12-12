@@ -22,12 +22,12 @@ public class PlayerScript : MonoBehaviour
     }
 
    
-    public void CanMove()
-    {
-        if (!isTurn ) return;
-        Debug.Log(GameManager.Instance.currentPlayerIndex + " is to move");
-        token.CanMove();
-    }
+    //public void CanMove()
+    //{
+    //    if (!isTurn ) return;
+    //    Debug.Log(GameManager.Instance.currentPlayerIndex + " is to move");
+    //    token.CanMove();
+    //}
 
    
 }

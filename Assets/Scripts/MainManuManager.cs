@@ -6,14 +6,7 @@ using UnityEngine.UIElements;
 
 public class MainManuManager : MonoBehaviour
 {
-    [SerializeField]
-    private TMP_Text pocketAmount;
-    [SerializeField]
-    private TMP_Text betAmountText;
-    [SerializeField]
-    private TMP_InputField betAmountManualText;
-    [SerializeField]
-    private TMP_Text totalBetAmountText;
+    
 
     [Header("UIScreens")]
     [SerializeField]
@@ -37,9 +30,6 @@ public class MainManuManager : MonoBehaviour
         AutoPlay();
         TwoPlayers();
         homeScreen.SetActive(false);
-       
-        betAmountText.text = "Entry - $ " + PhotonManager.instance.betAmount.ToString();
-        betAmountManualText.text = "$" + PhotonManager.instance.betAmount.ToString();
     }
     public void PlayWithFriends()
     {
@@ -69,32 +59,15 @@ public class MainManuManager : MonoBehaviour
     {
         PhotonManager.instance.numberOfPlayers = 2;
         ToggleForPlayers.instance.TwoPlayerCheck();
-        CalculateTotalBet();
+        BetManager.instance.CalculateTotalBet();
 
     }
     public void FourPlayers()
     {
         PhotonManager.instance.numberOfPlayers = 4;
-        CalculateTotalBet();
+        BetManager.instance.CalculateTotalBet();
 
     }
-    public void BetAmout(int bet)
-    {
-        if (PhotonManager.instance.betAmount >=0)
-        {
-            PhotonManager.instance.betAmount += bet;
-            Debug.Log(PhotonManager.instance.betAmount);
-        }
-        betAmountText.text = "Entry - $ " + PhotonManager.instance.betAmount.ToString();
-        betAmountManualText.text = "$"+PhotonManager.instance.betAmount.ToString();
-        CalculateTotalBet();
-    }
-    private void CalculateTotalBet()
-    {
-        double temp = PhotonManager.instance.betAmount * PhotonManager.instance.numberOfPlayers * 0.70;
-        PhotonManager.instance.totalBet = temp;
-        totalBetAmountText.text = temp.ToString();
 
 
-    }
 }

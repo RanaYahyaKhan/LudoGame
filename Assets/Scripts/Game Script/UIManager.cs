@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,14 +30,81 @@ public class UIManager : MonoBehaviour
     }
     public void SetBoardPosition(int playerIndex)
     {
-        if (playerIndex == 0)
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
-            GameManager.Instance.players[playerIndex].playerToken.boardPositions = player1BoardPositions;
+            if (playerIndex == 0)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    GameManager.Instance.players[playerIndex].playerToken[i].boardPositions = player1BoardPositions;
+                }
+
+            }
+            if (playerIndex == 1)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    GameManager.Instance.players[playerIndex].playerToken[i].boardPositions = player3BoardPositions;
+                }
+            }
         }
-        if (playerIndex == 1)
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 4)
         {
-            GameManager.Instance.players[playerIndex].playerToken.boardPositions = player3BoardPositions;
+            if (playerIndex == 0)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    GameManager.Instance.players[playerIndex].playerToken[i].boardPositions = player1BoardPositions;
+                }
+
+            }
+            if (playerIndex == 1)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    GameManager.Instance.players[playerIndex].playerToken[i].boardPositions = player2BoardPositions;
+                }
+            }
+            if (playerIndex == 2)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    GameManager.Instance.players[playerIndex].playerToken[i].boardPositions = player3BoardPositions;
+                }
+            }
+            if (playerIndex == 3)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    GameManager.Instance.players[playerIndex].playerToken[i].boardPositions = player4BoardPositions;
+                }
+            }
         }
     }
+    public void StopScaling()
+    {
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                GameManager.Instance.players[0].playerToken[i].GetComponent<TokenBlinker>().StopScaling();
+                GameManager.Instance.players[1].playerToken[i].GetComponent<TokenBlinker>().StopScaling();
+            }
+        }
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 4)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                GameManager.Instance.players[0].playerToken[i].GetComponent<TokenBlinker>().StopScaling();
+                GameManager.Instance.players[1].playerToken[i].GetComponent<TokenBlinker>().StopScaling();
+                GameManager.Instance.players[2].playerToken[i].GetComponent<TokenBlinker>().StopScaling();
+                GameManager.Instance.players[3].playerToken[i].GetComponent<TokenBlinker>().StopScaling();
+            }
+        }
 
-}
+    }
+
+
+
+}//end of class
+
