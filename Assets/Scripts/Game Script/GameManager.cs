@@ -41,15 +41,22 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsConnected)
         {
-            //GetListofPlayers();
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 4)
+            {
+                GetListofPlayers();
+            }
+            else
+            {
+                Invoke("StartTurn", 2.0f);
+            }
 
-            Invoke("StartTurn", 3.0f);
+            //Invoke("StartTurn", 5.0f);
         }
     }
    
     public void StartTurn()
     {
-        GetListofPlayers();
+        //GetListofPlayers();
         foreach (var item in instanciatedPlayers)
         {
             players.Add(item.GetComponent<PhotonPlayer>());
@@ -113,60 +120,91 @@ public class GameManager : MonoBehaviourPunCallbacks
     //get list of all players photon view id
     void GetListofPlayers()
     {
-        // Add all players' PhotonViews to the list
-        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            PhotonView view = player.GetComponent<PhotonView>();
-            if (view != null)
-                photonPlayers.Add(view);
-        }
 
-        SortPlayersRelativeToLocal();
+        Invoke("SortPlayersRelativeToLocal", 2f);
 
-        Invoke("SwapPlayers", 2f);
 
     }
+    private void SwapTwoPlayers()
+    {
+        //if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
+        //{
 
+        //    int firstPlayer = 1;
+        //    Debug.Log("Swaping the Players: " + firstPlayer);
+        //    GameObject tempPlayer = instanciatedPlayers[firstPlayer];
+        //    instanciatedPlayers.RemoveAt(firstPlayer);
+        //    instanciatedPlayers.Add(tempPlayer);
+
+        //}
+        //if (PhotonNetwork.LocalPlayer.ActorNumber == 3)
+        //{
+        //    for (int i = 0; i < PhotonNetwork.LocalPlayer.ActorNumber; i++)
+        //    {
+        //        int firstPlayer = i + 1;
+        //        Debug.Log("Swaping the Players: " + firstPlayer);
+        //        GameObject tempPlayer = instanciatedPlayers[firstPlayer];
+        //        instanciatedPlayers.RemoveAt(firstPlayer);
+        //        instanciatedPlayers.Add(tempPlayer);
+        //    }
+        //}
+        //check the list of all instanciated players
+
+       
+       // SortPlayersRelativeToLocal();
+
+        //foreach (var player in instanciatedPlayers)
+        //{
+        //    Debug.LogError(player.GetComponent<PhotonView>().ViewID);
+        //}
+        //.Invoke("StartTurn", 3.0f);
+
+    }
     void SortPlayersRelativeToLocal()
     {
         // Get the local player's Photon View ID
         int localViewID = PhotonNetwork.LocalPlayer.ActorNumber; // Or assign based on PhotonView.OwnerActorNr
 
         // Sort players relative to the local player's ID
-        photonPlayers.Sort((a, b) =>
+        instanciatedPlayers.Sort((a, b) =>
         {
-            int relativeA = (a.ViewID >= localViewID) ? a.ViewID - localViewID : a.ViewID - localViewID + PhotonNetwork.CurrentRoom.PlayerCount;
-            int relativeB = (b.ViewID >= localViewID) ? b.ViewID - localViewID : b.ViewID - localViewID + PhotonNetwork.CurrentRoom.PlayerCount;
+            int relativeA = (a.GetComponent<PhotonView>().ViewID >= localViewID) ? a.GetComponent<PhotonView>().ViewID - localViewID : a.GetComponent<PhotonView>().ViewID - localViewID + PhotonNetwork.CurrentRoom.PlayerCount;
+            int relativeB = (b.GetComponent<PhotonView>().ViewID >= localViewID) ? b.GetComponent<PhotonView>().ViewID - localViewID : b.GetComponent<PhotonView>().ViewID - localViewID + PhotonNetwork.CurrentRoom.PlayerCount;
 
             return relativeA.CompareTo(relativeB);
         });
 
         // Debug the sorted list
         Debug.Log("Sorted Player IDs relative to local player:");
-        foreach (var player in photonPlayers)
+        foreach (var player in instanciatedPlayers)
         {
-            Debug.Log(player.ViewID);
+            Debug.LogError(player.GetComponent<PhotonView>().ViewID);
         }
+        //Invoke("StartTurn", 5.0f);
+        Invoke("SwapPlayers", 2f);
+
     }
 
     private void SwapPlayers()
     {
-        if (photonPlayers != null)
+        if (instanciatedPlayers != null)
         {
             for (int i = 0; i < PhotonNetwork.LocalPlayer.ActorNumber - 1; i++)
             {
                 int firstPlayer = 0;
                 Debug.Log("Swaping the Players: " + i);
-                PhotonView tempPlayer = photonPlayers[firstPlayer];
-                photonPlayers.RemoveAt(firstPlayer);
-                photonPlayers.Add(tempPlayer);
+                GameObject tempPlayer = instanciatedPlayers[firstPlayer];
+                instanciatedPlayers.RemoveAt(firstPlayer);
+                instanciatedPlayers.Add(tempPlayer);
             }
         }
         Debug.Log("Sorted Player IDs after swaping are:");
-        foreach (var player in photonPlayers)
+        foreach (var player in instanciatedPlayers)
         {
-            Debug.Log(player.ViewID);
+            Debug.LogError(player.GetComponent<PhotonView>().ViewID);
         }
+        Invoke("StartTurn", 5.0f);
+
     }
 
     /*

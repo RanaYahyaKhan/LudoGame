@@ -32,6 +32,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject lobbyPannel;
     [SerializeField] private TMP_Text waitingTex;
 
+    [SerializeField] private GameObject gamePlayButtons;
    
     
     private const byte StartGameNow = 99;
@@ -169,6 +170,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby(); // Join the default lobby after connecting
+        gamePlayButtons.SetActive(true);
         Debug.Log("Connected to Master and joined lobby.");
 
     }
