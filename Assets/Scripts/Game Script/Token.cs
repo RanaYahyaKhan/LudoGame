@@ -12,8 +12,7 @@ public class Token : MonoBehaviourPun
     [SerializeField] public PhotonPlayer player;
     public Transform startingPosition;
     public bool isHome;
-
-    private int adjustedPlayerIndex;
+    public bool eligibaleToMove;
 
     void Start()
     {
@@ -23,8 +22,6 @@ public class Token : MonoBehaviourPun
         {
             tokenPositions = -1;
         }
-        // Calculate adjusted player index based on Photon player actor number
-        adjustedPlayerIndex = (PhotonNetwork.LocalPlayer.ActorNumber - 1) % PhotonNetwork.CurrentRoom.PlayerCount;
     }
    
     // Triggered by the move button
@@ -38,6 +35,7 @@ public class Token : MonoBehaviourPun
     private void MoveToken()
     {
         player.canBlink = false;
+        eligibaleToMove=false;
         UIManager.Instance.StopScaling();
         Debug.Log(GameManager.Instance.currentPlayerIndex + "is moving do you Know");
         // Stop blinking for all tokens
@@ -51,7 +49,7 @@ public class Token : MonoBehaviourPun
 
         int currentTokenPosition = tokenPositions;
         // Check if the move is valid
-       if (currentTokenPosition == -1 /*&& DiceRoller.instance.diceValue == 6*/) // Token can enter the board on rolling a 6
+       if (currentTokenPosition == -1 && DiceRoller.instance.diceValue == 6) // Token can enter the board on rolling a 6
         {
             //tokenPositions += DiceRoller.instance.diceValue;
             tokenPositions = 0; // Move to the starting position
@@ -132,15 +130,7 @@ public class Token : MonoBehaviourPun
         AddTokenToTile(newPosition);
         Debug.Log($"Token {token.name} moved to position {newPosition}");
     }
-    private Vector3 GetAdjustedPosition(int positionIndex)
-    {
-        int adjustedIndex = (positionIndex + adjustedPlayerIndex) % GameManager.Instance.boardStartPoint.Length;
-        return boardPositions[adjustedIndex].position;
-    }
-    private int GetAdjustedIndex(int positionIndex)
-    {
-        return (positionIndex + adjustedPlayerIndex) % GameManager.Instance.boardStartPoint.Length;
-    }
+   
     //Add the token to the tile
     private void AddTokenToTile(int index)
     {

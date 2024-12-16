@@ -8,16 +8,19 @@ public class GameManager : MonoBehaviourPunCallbacks
     public int currentPlayerIndex = 0; // Tracks the current player's turn
    public List<PhotonPlayer> players =new List<PhotonPlayer>();
 
-    public GameObject WininScreen;
+    public GameObject WininScreen; //refrence of wining Screen
     public List<GameObject> instanciatedPlayers = new List<GameObject>();
     public GameObject playerPrefab; // The prefab name in Resources folder
-    public Transform[] spawnPoints;
+    public Transform[] spawnPoints;//ther point of red green yellow and blue house in game
 
     public PhotonPlayer currentPlayer;
 
-    public Transform[] boardStartPoint;
+    [SerializeField] private GameObject twoPlayers;
+    [SerializeField] private List<GameObject> fourPlayers =new List<GameObject>();
 
-    public List<PhotonView> photonPlayers = new List<PhotonView>();
+    public float playerTime = 20.0f; // player time in seconds
+    public bool startGame = false;
+    public bool stopTimer = false;
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -44,10 +47,17 @@ public class GameManager : MonoBehaviourPunCallbacks
             if (PhotonNetwork.CurrentRoom.PlayerCount == 4)
             {
                 GetListofPlayers();
+                foreach (var item in fourPlayers)
+                {
+                    item.SetActive(true);
+                }
+                
             }
             else
             {
                 Invoke("StartTurn", 2.0f);
+                twoPlayers.SetActive(true);
+
             }
 
             //Invoke("StartTurn", 5.0f);
@@ -99,6 +109,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.LocalPlayer.ActorNumber - 1 == currentPlayerIndex)
         {
             UIManager.Instance.EnableDiceRoll();
+            UpdatePlayerTimer.instance.restartTimer();
             Debug.Log($"Player {currentPlayerIndex}'s Turn");
         }
         else
@@ -109,11 +120,15 @@ public class GameManager : MonoBehaviourPunCallbacks
   
     public void EndTurn()
     {
+       
         DiceRoller.instance.diceRolled = false;
         UIManager.Instance.DisableDiceRoll();
         UIManager.Instance.StopScaling();
-        currentPlayerIndex = (currentPlayerIndex + 1) % PhotonNetwork.CurrentRoom.PlayerCount; //Commennted to check
-        photonView.RPC("SetTurn", RpcTarget.All, currentPlayerIndex);
+        if (PhotonNetwork.LocalPlayer.ActorNumber - 1 == currentPlayerIndex)
+        {
+            currentPlayerIndex = (currentPlayerIndex + 1) % PhotonNetwork.CurrentRoom.PlayerCount; //Commennted to check
+            photonView.RPC("SetTurn", RpcTarget.All, currentPlayerIndex);
+        }
       
     }
 
@@ -125,6 +140,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 
     }
+    /*
     private void SwapTwoPlayers()
     {
         //if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
@@ -160,6 +176,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         //.Invoke("StartTurn", 3.0f);
 
     }
+    */
+
+    //Sort the players according to the photonview id
     void SortPlayersRelativeToLocal()
     {
         // Get the local player's Photon View ID
@@ -184,7 +203,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         Invoke("SwapPlayers", 2f);
 
     }
-
+    //swap the players acording to their view id 
+    // like player 1 has sequence 1234
+    //for player 2 has sequence 2341
+    //for player 3 has 3412
+    // and for player 4 has 4123
     private void SwapPlayers()
     {
         if (instanciatedPlayers != null)

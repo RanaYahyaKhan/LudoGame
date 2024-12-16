@@ -87,12 +87,14 @@ public class PhotonPlayer : MonoBehaviourPun
         foreach (var token in tokens)
         {
             TokenBlinker tokenBlinker = token.GetComponent<TokenBlinker>();
+            Token tkn = token.GetComponent<Token>();
             if (tokenBlinker != null)
             {
                 // Check if the token is eligible to move
                 if (IsTokenEligible(token))
                 {
                     tokenBlinker.StartScaling();
+                    tkn.eligibaleToMove = true;
 
                 }
                 else
@@ -112,8 +114,8 @@ public class PhotonPlayer : MonoBehaviourPun
 
         // Token is eligible to move if it's off the board and a 6 is rolled
         // or if it's already on the board
-        return currentTokenPosition == -1 || currentTokenPosition >= 0;
-        //return (currentTokenPosition == -1 && DiceRoller.instance.diceValue == 6) || currentTokenPosition >= 0;
+        //return currentTokenPosition == -1 || currentTokenPosition >= 0;
+        return (currentTokenPosition == -1 && DiceRoller.instance.diceValue == 6) || currentTokenPosition >= 0;
     }
 
 

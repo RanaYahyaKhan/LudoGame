@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public Transform[] player2BoardPositions;
     public Transform[] player3BoardPositions;
     public Transform[] player4BoardPositions;
+    public bool enableUi=false;
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -22,11 +23,13 @@ public class UIManager : MonoBehaviour
     {
         
         rollButton.interactable = true; rollButton.enabled = true;
+        enableUi = true;
         
     }
     public void DisableDiceRoll()
     {
         rollButton.interactable = false; rollButton.enabled = false;
+        enableUi = false;
     }
     public void SetBoardPosition(int playerIndex)
     {

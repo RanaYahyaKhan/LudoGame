@@ -392,7 +392,7 @@ MonoBehaviour:
   tokenPositions: 0
   boardPositions: []
   player: {fileID: 6699995435427744190}
-  startingPosition: {fileID: 2821682951670180786}
+  startingPosition: {fileID: 3627448073969956044}
   isHome: 0
 --- !u!114 &3752648966573401880
 MonoBehaviour:
@@ -691,7 +691,7 @@ MonoBehaviour:
   tokenPositions: 0
   boardPositions: []
   player: {fileID: 6699995435427744190}
-  startingPosition: {fileID: 3114539508100408380}
+  startingPosition: {fileID: 7236656069292812560}
   isHome: 0
 --- !u!114 &3345097172883388978
 MonoBehaviour:
