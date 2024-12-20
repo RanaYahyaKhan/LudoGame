@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject twoPlayers;
     [SerializeField] private List<GameObject> fourPlayers =new List<GameObject>();
 
-    public float playerTime = 20.0f; // player time in seconds
+    public float playerTime = 5.0f; // player time in seconds
     public bool startGame = false;
     public bool stopTimer = false;
     private void Awake()

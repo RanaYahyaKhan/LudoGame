@@ -394,6 +394,7 @@ MonoBehaviour:
   player: {fileID: 6699995435427744190}
   startingPosition: {fileID: 3627448073969956044}
   isHome: 0
+  eligibaleToMove: 0
 --- !u!114 &3752648966573401880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -693,6 +694,7 @@ MonoBehaviour:
   player: {fileID: 6699995435427744190}
   startingPosition: {fileID: 7236656069292812560}
   isHome: 0
+  eligibaleToMove: 0
 --- !u!114 &3345097172883388978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -884,6 +886,7 @@ MonoBehaviour:
   player: {fileID: 6699995435427744190}
   startingPosition: {fileID: 2898214546811255646}
   isHome: 0
+  eligibaleToMove: 0
 --- !u!114 &6892328065810375876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1075,6 +1078,7 @@ MonoBehaviour:
   player: {fileID: 6699995435427744190}
   startingPosition: {fileID: 7764389568150644464}
   isHome: 0
+  eligibaleToMove: 0
 --- !u!114 &1773296418152472881
 MonoBehaviour:
   m_ObjectHideFlags: 0

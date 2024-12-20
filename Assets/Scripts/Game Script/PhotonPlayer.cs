@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -96,6 +97,7 @@ public class PhotonPlayer : MonoBehaviourPun
                     tokenBlinker.StartScaling();
                     tkn.eligibaleToMove = true;
 
+
                 }
                 else
                 {
@@ -118,6 +120,60 @@ public class PhotonPlayer : MonoBehaviourPun
         return (currentTokenPosition == -1 && DiceRoller.instance.diceValue == 6) || currentTokenPosition >= 0;
     }
 
+    public void MoveAPlayer()
+    {
+        Invoke("PlayerMovement", 3f);
+    }
+    private void PlayerMovement()
+    {
+        if (tokens[0].GetComponent<Token>().eligibaleToMove && DiceRoller.instance.diceValue==6 && tokens[0].GetComponent<Token>().isHome )
+        {
+            tokens[0].GetComponent<Token>().MoveSelectedToken();
+        }else if(tokens[1].GetComponent<Token>().eligibaleToMove && DiceRoller.instance.diceValue == 6 && tokens[1].GetComponent<Token>().isHome)
+        {
+            tokens[1].GetComponent<Token>().MoveSelectedToken();
+        }
+        else if (tokens[2].GetComponent<Token>().eligibaleToMove && DiceRoller.instance.diceValue == 6 && tokens[2].GetComponent<Token>().isHome)
+        {
+            tokens[2].GetComponent<Token>().MoveSelectedToken();
+        }
+        else if (tokens[3].GetComponent<Token>().eligibaleToMove && DiceRoller.instance.diceValue == 6 && tokens[3].GetComponent<Token>().isHome)
+        {
+            tokens[3].GetComponent<Token>().MoveSelectedToken();
+        }
+        else
+        {
+            foreach (var token in tokens)
+            {
+                Token tkn = token.GetComponent<Token>();
 
+                if (tkn.eligibaleToMove)
+                {
+                    tkn.MoveSelectedToken();
+                    break;
+                }
+            }
+        }
+        /*
+        foreach (var token in tokens)
+        {
+            Token tkn = token.GetComponent<Token>();
+       
+            if (tkn.eligibaleToMove)
+            {
+                if (DiceRoller.instance.diceValue == 6 && tkn.isHome)
+                {
+                    tkn.MoveSelectedToken();
+                    break;
+                }
+                else
+                {
+                    tkn.MoveSelectedToken();
+                    break;
+                }
+            }
+        }
+        */
+    }
 }//end of class
 

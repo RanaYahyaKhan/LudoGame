@@ -70,10 +70,11 @@ public class UpdatePlayerTimer : MonoBehaviour
             {
                 DiceRoller.instance.RollDice();
                 restartTimer();
+                GameManager.Instance.currentPlayer.MoveAPlayer();
+
             }
             else
             {
-
             }
             
         }
