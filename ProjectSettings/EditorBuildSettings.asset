@@ -11,10 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LoginScene.unity
     guid: c315b0529e2127c43a42c5a76d38c6df
-  - enabled: 0
-    path: Assets/Scenes/LudoGamePlay.unity
-    guid: b49800030fba2474e80f3bbfe44d9c7c
   - enabled: 1
     path: Assets/Scenes/LudoGame.unity
     guid: 225f2f32935c14142b4c86f6b89af676
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: d78e5377dfc1aa34da399baa1117fea7, type: 2}
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: cd949f34d2f67a544894f3e92f2ff482, type: 2}
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 060579f2818e4c74d8ec89dd5a8cd592, type: 2}
