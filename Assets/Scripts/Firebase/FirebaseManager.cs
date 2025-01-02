@@ -15,7 +15,8 @@ public class FirebaseManager : MonoBehaviour
     private GoogleSignInConfiguration configuration;
 
     //Firebase.DependencyStatus dependencyStatus = Firebase.DependencyStatus.UnavailableOther;
-    FirebaseAuth auth;
+    Firebase.Auth.FirebaseAuth auth;
+    Firebase.Auth.FirebaseUser user;
 
     public TMP_Text Username, UserEmail;
     public TMP_InputField errInput; // Input field for room name
@@ -35,26 +36,29 @@ public class FirebaseManager : MonoBehaviour
 
     private void Start()
     {
-
         InitFirebase();
-       
+
     }
 
     void InitFirebase()
     {
-        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-       
+        //auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
+        {
+            FirebaseApp app = FirebaseApp.DefaultInstance;
+            auth = FirebaseAuth.DefaultInstance;
+        });
     }
 
     public void Login()
     {
-        Username.text= "Login";
+       
         GoogleSignIn.Configuration = new GoogleSignInConfiguration
         {
             // Copy this value from the google-service.json file.
             // oauth_client with type == 3
             WebClientId = GoogleAPI,
-             RequestIdToken = true,
+            RequestIdToken = true,
             RequestEmail = true,
             UseGameSignIn = false,
         };
@@ -75,9 +79,38 @@ public class FirebaseManager : MonoBehaviour
     private void OnGoogleAuthComplete(Task<GoogleSignInUser> task)
     {
         TaskCompletionSource<FirebaseUser> signInCompleted = new TaskCompletionSource<FirebaseUser>();
+        Username.text = "Login";
+        if (!task.IsCanceled && !task.IsFaulted || task.IsCompleted) 
+        {
+            Credential credential = GoogleAuthProvider.GetCredential(((Task<GoogleSignInUser>)task).Result.IdToken, null);
+            auth.SignInWithCredentialAsync(credential).ContinueWith(authTask =>
+            {
+                if (!authTask.IsCanceled && !authTask.IsFaulted || authTask.IsCompleted)
+                {
+                    signInCompleted.SetResult(((Task<FirebaseUser>)authTask).Result);
+                    Debug.Log("Success");
+                    Username.text = "Success";
+                    user = FirebaseAuth.DefaultInstance.CurrentUser;
+                    //user = auth.CurrentUser;
+                    Username.text = user.DisplayName;
+                    UserEmail.text = user.Email;
 
+                    StartCoroutine(LoadImage(CheckImageUrl(user.PhotoUrl.ToString())));
+                }
+                else
+                {
+                    Debug.LogError("some this is wrong in credential");
+                }
+             
+            });
+        }
+        else
+        {
+            Debug.LogError("some this is wrong in sigin");
+        }
 
-        if (task.IsCanceled)
+        /*
+        if (task.IsCanceled )
         {
             signInCompleted.SetCanceled();
             Debug.Log("Cancelled");
@@ -91,10 +124,7 @@ public class FirebaseManager : MonoBehaviour
         }
         else
         {
-            var googleUser = task.Result;
-            Debug.Log("Google User ID Token: " + googleUser.IdToken);
-
-            Credential credential = GoogleAuthProvider.GetCredential(googleUser.IdToken, null);
+            Credential credential = Firebase.Auth.GoogleAuthProvider.GetCredential(((Task<GoogleSignInUser>)task).Result.IdToken, null);
             auth.SignInWithCredentialAsync(credential).ContinueWith(authTask =>
             {
                 if (authTask.IsCanceled)
@@ -104,47 +134,34 @@ public class FirebaseManager : MonoBehaviour
                 else if (authTask.IsFaulted)
                 {
                     signInCompleted.SetException(authTask.Exception);
-                    Debug.Log("Faulted In Auth: " + authTask.Exception);
+                    Debug.Log("Faulted In Auth " + task.Exception);
+                    Username.text = "Faulted In Auth " + task.Exception;
                 }
                 else
                 {
                     signInCompleted.SetResult(((Task<FirebaseUser>)authTask).Result);
-                    FirebaseUser user = auth.CurrentUser;
-                    if (user != null)
-                    {
-                        Debug.Log($"User Signed In: {user.DisplayName}, {user.Email}");
-                        UpdateUI(user.DisplayName, user.Email, user.PhotoUrl != null ? user.PhotoUrl.ToString() : null);
-                    }
-                    else
-                    {
-                        Username.text = "data is not fetch";
-                    }
-                    /*
-                    Username.text = authTask.Result.DisplayName;
-                    UserEmail.text = authTask.Result.Email;
-                    Debug.Log("User is " + authTask.Result.DisplayName + " and Email is " + authTask.Result.Email);
-                    if (authTask.Result.PhotoUrl != null)
-                    {
-                        StartCoroutine(LoadImage(authTask.Result.PhotoUrl.ToString()));
-                    }
-                    */
+                    Debug.Log("Success");
+                    Username.text = "Success";
+                    user = auth.CurrentUser;
+                    Username.text = user.DisplayName;
+                    UserEmail.text = user.Email;
+
+                    StartCoroutine(LoadImage(CheckImageUrl(user.PhotoUrl.ToString())));
                 }
             });
         }
+        */
     }
 
 
-    private void UpdateUI(string username, string email, string imageUrl)
+    private string CheckImageUrl(string url)
     {
-        Username.text = username;
-        UserEmail.text = email;
-
-        if (!string.IsNullOrEmpty(imageUrl))
+        if (!string.IsNullOrEmpty(url))
         {
-            StartCoroutine(LoadImage(imageUrl));
+            return url;
         }
+        return imageUrl;
     }
-
 
     IEnumerator LoadImage(string imageUri)
     {
@@ -158,4 +175,4 @@ public class FirebaseManager : MonoBehaviour
         GoogleSignIn.DefaultInstance.SignOut();
     }
 
-}// end of class
+}// end f cass

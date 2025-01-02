@@ -16910,7 +16910,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &442080605
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37372,8 +37372,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2004168155}
-        m_TargetAssemblyTypeName: FirebaseManager, Assembly-CSharp
+      - m_Target: {fileID: 1999403285}
+        m_TargetAssemblyTypeName: GoogleLoginScript, Assembly-CSharp
         m_MethodName: OnSignOut
         m_Mode: 1
         m_Arguments:
@@ -40782,9 +40782,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2004168155}
-        m_TargetAssemblyTypeName: FirebaseManager, Assembly-CSharp
-        m_MethodName: Login
+      - m_Target: {fileID: 1999403285}
+        m_TargetAssemblyTypeName: GoogleLoginScript, Assembly-CSharp
+        m_MethodName: SignInWithGoogle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -55533,7 +55533,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1544197915
 Transform:
   m_ObjectHideFlags: 0
@@ -71633,6 +71633,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1997370926}
   m_CullTransparentMesh: 1
+--- !u!1 &1999403284
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1999403286}
+  - component: {fileID: 1999403285}
+  m_Layer: 0
+  m_Name: Google
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1999403285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999403284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 024418f683fc5c445a37094f724cdc63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Username: {fileID: 1962133473}
+  UserEmail: {fileID: 1166289571}
+--- !u!4 &1999403286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999403284}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 200.99004, y: 601.79706, z: -2.5607748}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2004168153
 GameObject:
   m_ObjectHideFlags: 0
@@ -71649,7 +71695,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2004168154
 Transform:
   m_ObjectHideFlags: 0
@@ -77798,3 +77844,4 @@ SceneRoots:
   - {fileID: 2004168154}
   - {fileID: 1758031404}
   - {fileID: 1544197915}
+  - {fileID: 1999403286}
