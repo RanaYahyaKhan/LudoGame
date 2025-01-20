@@ -18,6 +18,7 @@ public class DiceRoller : MonoBehaviourPun
     private float rollDuration = 2.0f; // Duration of the dice rolling animation
     private float rollSpeed = 0.1f;    // Speed of dice face switching during rolling
     private int selectedFace; // The index of the final dice face
+    
     private void Awake()
     {
         instance = this;
@@ -44,6 +45,7 @@ public class DiceRoller : MonoBehaviourPun
             diceRolled = true;
             int result = Random.Range(0, diceFaces.Length);
             photonView.RPC("ShowDice", RpcTarget.All, result);
+            AudioController.instance.DiceRollSound();
         }
        
 

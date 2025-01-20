@@ -35,7 +35,8 @@ public class PhotonPlayer : MonoBehaviourPun
    
     public void StartTurn()
     {
-        if (PhotonNetwork.LocalPlayer.ActorNumber - 1 == GameManager.Instance.currentPlayerIndex)
+        //if (PhotonNetwork.LocalPlayer.ActorNumber - 1 == GameManager.Instance.currentPlayerIndex)
+        if (TurnManager.instance.IsMyTurn())
         {
             isTurn = true;
             MoveToken();
@@ -51,7 +52,7 @@ public class PhotonPlayer : MonoBehaviourPun
     }
     private void Update()
     {
-        if (canBlink)
+        if (canBlink && DiceRoller.instance.diceRolled)
         {
             HighlightEligibleTokens();
         }
@@ -72,7 +73,8 @@ public class PhotonPlayer : MonoBehaviourPun
         {
             Debug.Log("End of turn is Calling");
             ButtonsInteractable(false);
-            GameManager.Instance.EndTurn();
+            //GameManager.Instance.EndTurn();
+            TurnManager.instance.NextTurn();
         }
     }
     public void ButtonsInteractable( bool set)
@@ -114,10 +116,11 @@ public class PhotonPlayer : MonoBehaviourPun
 
         int currentTokenPosition = playerToken[tokenIndex].tokenPositions;
 
+
         // Token is eligible to move if it's off the board and a 6 is rolled
         // or if it's already on the board
         //return currentTokenPosition == -1 || currentTokenPosition >= 0;
-        return (currentTokenPosition == -1 && DiceRoller.instance.diceValue == 6) || currentTokenPosition >= 0;
+        return ((currentTokenPosition == -1 && DiceRoller.instance.diceValue == 6) || currentTokenPosition >= 0) && currentTokenPosition + DiceRoller.instance.diceValue <=UIManager.Instance.player1BoardPositions.Length && !token.GetComponent<Token>().isWin;
     }
 
     public void MoveAPlayer()
@@ -126,18 +129,18 @@ public class PhotonPlayer : MonoBehaviourPun
     }
     private void PlayerMovement()
     {
-        if (tokens[0].GetComponent<Token>().eligibaleToMove && DiceRoller.instance.diceValue==6 && tokens[0].GetComponent<Token>().isHome )
+        if (tokens[0].GetComponent<Token>().eligibaleToMove && DiceRoller.instance.diceValue==6 && tokens[0].GetComponent<Token>().isHome && !tokens[0].GetComponent<Token>().isWin)
         {
             tokens[0].GetComponent<Token>().MoveSelectedToken();
-        }else if(tokens[1].GetComponent<Token>().eligibaleToMove && DiceRoller.instance.diceValue == 6 && tokens[1].GetComponent<Token>().isHome)
+        }else if(tokens[1].GetComponent<Token>().eligibaleToMove && DiceRoller.instance.diceValue == 6 && tokens[1].GetComponent<Token>().isHome && !tokens[1].GetComponent<Token>().isWin)
         {
             tokens[1].GetComponent<Token>().MoveSelectedToken();
         }
-        else if (tokens[2].GetComponent<Token>().eligibaleToMove && DiceRoller.instance.diceValue == 6 && tokens[2].GetComponent<Token>().isHome)
+        else if (tokens[2].GetComponent<Token>().eligibaleToMove && DiceRoller.instance.diceValue == 6 && tokens[2].GetComponent<Token>().isHome && !tokens[2].GetComponent<Token>().isWin)
         {
             tokens[2].GetComponent<Token>().MoveSelectedToken();
         }
-        else if (tokens[3].GetComponent<Token>().eligibaleToMove && DiceRoller.instance.diceValue == 6 && tokens[3].GetComponent<Token>().isHome)
+        else if (tokens[3].GetComponent<Token>().eligibaleToMove && DiceRoller.instance.diceValue == 6 && tokens[3].GetComponent<Token>().isHome && !tokens[3].GetComponent<Token>().isWin)
         {
             tokens[3].GetComponent<Token>().MoveSelectedToken();
         }

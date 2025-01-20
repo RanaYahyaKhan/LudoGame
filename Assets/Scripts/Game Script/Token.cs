@@ -12,10 +12,12 @@ public class Token : MonoBehaviourPun
     [SerializeField] public PhotonPlayer player;
     public Transform startingPosition;
     public bool isHome;
+    public bool isWin;
     public bool eligibaleToMove;
 
     void Start()
     {
+        isWin= false;
         // Initialize token positions
         isHome = true;
         if (isHome)
@@ -104,13 +106,19 @@ public class Token : MonoBehaviourPun
         {
             player.isSixCome = false;
             DiceRoller.instance.diceRolled = false;
+            UpdatePlayerTimer.instance.restartTimer();
+            
+            //if auto play Mode is on
+                GameManager.Instance.AutoPlayMode();
+            
             Debug.Log("Is Six is false");
         }
         else
         {
             GameManager.Instance.players[0].isTurn = false;
             player.ButtonsInteractable(false);
-            GameManager.Instance.EndTurn();
+            //GameManager.Instance.EndTurn();
+            TurnManager.instance.NextTurn();
             //GameManager.Instance.players[GameManager.Instance.currentPlayerIndex].isTurn=false;
             Debug.Log("Changing the turn");
 
