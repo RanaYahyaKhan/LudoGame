@@ -79,6 +79,12 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         signInPannel.SetActive(false);
 
     }
+    public void SignInSocial(string name)
+    {
+        PhotonNetwork.NickName = name;
+
+        signInPannel.SetActive(false);
+    }
     #region PhotonRoom Creating and Joining;
     public void CreateRoom()
     {
